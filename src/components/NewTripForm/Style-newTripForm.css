@@ -1,0 +1,73 @@
+#trip-form {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-image: url('https://images.squarespace-cdn.com/content/v1/5a7c0544d74cffa3a6ce66b3/1630183781197-HDM6VZNPNANFZIYPJUI5/%D7%AA%D7%9E%D7%95%D7%A0%D7%AA+%D7%A0%D7%95%D7%A3+-+%D7%A9%D7%95%D7%95%D7%99%D7%A5.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: bottom center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+input[type="text"] {
+  width: 400px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+button {
+  background-color: #92b00e;
+  color: #2c1425;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  /* align-self: flex-start; */
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #698f02;
+}
+
+/* #show-all-trips-link {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 20px;
+} */
+
+#show-all-trips-button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+#show-all-trips-button:hover {
+  background-color: #218838;
+}

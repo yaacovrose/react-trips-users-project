@@ -1,11 +1,41 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import axios from "axios";
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { Card } from '../Trips/Card.interface';
 
-import './Style-newTripForm.css'
 
 
-export default function NewTrip(): JSX.Element {
+export default function UpdateTrip(): JSX.Element {
+
+    const { id } = useParams()
+
+    const [vacations, setVacations] = useState<Card>()
+
+    const axiosTrip = async () => {
+        try {
+            const vactionsResult: Card = await (await axios.get(`http://localhost:3000/api/trips/${id}`)).data;
+            setVacations(vactionsResult);
+        } catch (err) {
+            throw err
+        }
+    }
+
+    useEffect(() => {
+        axiosTrip();
+    }, []);
+
+    useEffect(() => {
+        if (vacations) {
+            setTripData({
+                name: vacations.name,
+                destination: vacations.destination,
+                startDate: vacations.startDate,
+                endDate: vacations.endDate,
+                image: vacations.image,
+                // activities: [...vacations.activities],
+            });
+        }
+    }, [vacations]);
 
     const [tripData, setTripData] = useState({
         name: '',
@@ -13,9 +43,9 @@ export default function NewTrip(): JSX.Element {
         startDate: '',
         endDate: '',
         image: '',
-        activities: ['dcvfbgn','dfgm'],
+        // activities: [],
     });
-
+    
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setTripData({
@@ -24,26 +54,10 @@ export default function NewTrip(): JSX.Element {
         });
     };
 
-    const removeActivity = (index: number) => {
-        const updatedActivities = [...tripData.activities];
-        updatedActivities.splice(index, 1);
-        setTripData({
-            ...tripData,
-            activities: updatedActivities,
-        });
-    };
-
-    const addMoreFields = () => {
-        setTripData({
-            ...tripData,
-            activities: [...tripData.activities, ''],
-        });
-    };
-
     const axiosAddTrip = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/trips/', tripData, {
+            const response = await axios.put(`http://localhost:3000/api/trips/${id}`, tripData, {
                 headers: { authorization: localStorage.getItem('token') }
             });
             if (response.status === 200) {
@@ -56,28 +70,29 @@ export default function NewTrip(): JSX.Element {
         }
     };
 
+
     return (
         <div>
             <form onSubmit={axiosAddTrip}>
                 <div>
-                    <label htmlFor="name">Name:</label>
+                    <label htmlFor="name">name:</label>
                     <input
                         type="text"
                         name="name"
                         value={tripData.name}
                         onChange={handleInputChange}
-                        placeholder="Enter name"
+                        placeholder={tripData.name}
                         id="name"
                     />
                 </div>
                 <div>
-                    <label htmlFor="destination">Destination:</label>
+                    <label htmlFor="destination">destination:</label>
                     <input
                         type="text"
                         name="destination"
                         value={tripData.destination}
                         onChange={handleInputChange}
-                        placeholder="Enter destination"
+                        placeholder={tripData.destination}
                         id="destination"
                     />
                 </div>
@@ -88,7 +103,7 @@ export default function NewTrip(): JSX.Element {
                         name="startDate"
                         value={tripData.startDate}
                         onChange={handleInputChange}
-                        placeholder="Enter startDate"
+                        placeholder={tripData.startDate}
                         id="startDate"
                     />
                 </div>
@@ -99,7 +114,7 @@ export default function NewTrip(): JSX.Element {
                         name="endDate"
                         value={tripData.endDate}
                         onChange={handleInputChange}
-                        placeholder="Enter endDate"
+                        placeholder={tripData.endDate}
                         id="endDate"
                     />
                 </div>
@@ -110,41 +125,31 @@ export default function NewTrip(): JSX.Element {
                         name="image"
                         value={tripData.image}
                         onChange={handleInputChange}
-                        placeholder="Enter image"
+                        placeholder={tripData.image}
                         id="image"
                     />
                 </div>
-                <div>
-                    <label htmlFor="activities">Activities:</label>
-                    {tripData.activities.map((activity, index) => (
-                        <div key={index}>
-                            <input
-                                type="text"
-                                value={activity}
-                                onChange={(e) => {
-                                    const updatedActivities = [...tripData.activities];
-                                    updatedActivities[index] = e.target.value;
-                                    setTripData({
-                                        ...tripData,
-                                        activities: updatedActivities,
-                                    });
-                                }}
-                                placeholder="Enter activity"
-                            />
-                            <button type="button" onClick={() => removeActivity(index)}>
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={addMoreFields}>
-                        Add More
-                    </button>
-                </div>
+                {/* <label htmlFor="activities">activity:</label>
+                {tripData.activities!.map((activity, index) => (
+                    <div key={index}>
+                        <input
+                            type="text"
+                            value={activity}
+                            onChange={(e) => {
+                                const updatedActivities = [...tripData.activities!];
+                                updatedActivities[index] = e.target.value;
+                                setTripData({
+                                    ...tripData,
+                                    activities: updatedActivities,
+                                });
+                            }}
+                            placeholder={activity}
+                        />
+                    </div>))} */}
                 <button type="submit">Add Trip</button>
             </form>
-            <Link to="/Trips">
-                <button>Show all trips</button>
-            </Link>
         </div>
-    );
+    )
 }
+
+
